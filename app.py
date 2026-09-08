@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template_string, make_response
+from flask import Flask, render_template_string, make_response, send_from_directory
 
 app = Flask(__name__)
 
@@ -32,19 +32,10 @@ def javascript():
         return response
     return make_response("", 404)
 
-from flask import send_from_directory
-
-@app.route("/<filename>.png")
-@app.route("/<filename>.jpg")
-@app.route("/<filename>.gif")
-def serve_images(filename):
-    # This automatically detects if the website is asking for a PNG, JPG, or GIF
-    import request
-    ext = request.path.split(".")[-1]
-    full_filename = f"{filename}.{ext}"
-    
-    if os.path.exists(full_filename):
-        return send_from_directory(os.getcwd(), full_filename)
+@app.route("/<path:filename>")
+def serve_static_files(filename):
+    if os.path.exists(filename):
+        return send_from_directory(os.getcwd(), filename)
     return make_response("", 404)
 
 if __name__ == "__main__":
