@@ -32,6 +32,21 @@ def javascript():
         return response
     return make_response("", 404)
 
+from flask import send_from_directory
+
+@app.route("/<filename>.png")
+@app.route("/<filename>.jpg")
+@app.route("/<filename>.gif")
+def serve_images(filename):
+    # This automatically detects if the website is asking for a PNG, JPG, or GIF
+    import request
+    ext = request.path.split(".")[-1]
+    full_filename = f"{filename}.{ext}"
+    
+    if os.path.exists(full_filename):
+        return send_from_directory(os.getcwd(), full_filename)
+    return make_response("", 404)
+
 if __name__ == "__main__":
     app.run(port=8000)
 
