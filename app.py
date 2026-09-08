@@ -10,7 +10,6 @@ def home():
             html_content = f.read()
     else:
         html_content = "<h1>My Corner</h1><p>index.html was not found.</p>"
-        
     return render_template_string(html_content)
 
 @app.route("/style.css", methods=["GET"])
@@ -18,11 +17,21 @@ def css():
     if os.path.exists("style.css"):
         with open("style.css", "r") as f:
             css_content = f.read()
-        
         response = make_response(css_content)
         response.headers["Content-Type"] = "text/css"
         return response
     return make_response("", 404)
 
+@app.route("/script.js", methods=["GET"])
+def javascript():
+    if os.path.exists("script.js"):
+        with open("script.js", "r") as f:
+            js_content = f.read()
+        response = make_response(js_content)
+        response.headers["Content-Type"] = "application/javascript"
+        return response
+    return make_response("", 404)
+
 if __name__ == "__main__":
     app.run(port=8000)
+
