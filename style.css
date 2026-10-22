@@ -3,4 +3,5 @@ body {
     color: #0000ff;
     font-family: Arial, sans-serif;
     padding: 20px;
+    text-shadow: 0 0 5px #0000FF;
 }
